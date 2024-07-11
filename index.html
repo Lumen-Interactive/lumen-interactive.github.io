@@ -1,96 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lumen Interactive</title>
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-        background: url('background.svg') no-repeat center center fixed;
-        background-size: cover;
-    }
-    header {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(100px);
-        z-index: 1000;
-        transition: all 0.3s;
-    }
-    header.scrolled {
-        backdrop-filter: blur(100px);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
-    .logo {
-        display: inline-block;
-        margin: 10px;
-    }
-    nav {
-        float: right;
-        margin: 10px;
-    }
-    nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    nav ul li {
-        display: inline-block;
-        margin: 0 10px;
-    }
-    footer {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background: rgba(255, 255, 255, 0.8);
-        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(5px);
-        z-index: 1000;
-        transition: all 0.3s;
-    }
-    footer.scrolled {
-        backdrop-filter: blur(10px);
-        box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.2);
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lumen Interactive</title>
+    <style>
+        /* Resetting default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Fallback background color */
+            background-image: url('background.svg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scrollbar */
+        }
+
+        /* Header styles */
+        #topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            backdrop-filter: blur(10px); /* Blur effect */
+            z-index: 1000; /* Ensure it's above other content */
+            transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Drop shadow */
+        }
+
+        #topbar.scrolled {
+            background-color: rgba(255, 255, 255, 1); /* Solid background on scroll */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 40px; /* Adjust size as needed */
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 1.2rem;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu {
+            list-style-type: none;
+            display: flex;
+        }
+
+        .menu li {
+            margin-right: 20px;
+        }
+
+        .menu li a {
+            text-decoration: none;
+            color: #333; /* Adjust link color */
+            transition: color 0.3s ease;
+        }
+
+        .menu li a:hover {
+            color: #666; /* Adjust hover color */
+        }
+
+        /* Hamburger icon styles */
+        .nav-toggle {
+            display: none;
+        }
+
+        .nav-toggle-label {
+            cursor: pointer;
+            padding: 5px;
+            display: block;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+        }
+
+        .nav-toggle-label span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background-color: #333;
+            margin: 4px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-toggle:checked + .nav-toggle-label span {
+            transform: rotate(45deg);
+            background-color: #333;
+        }
+
+        .nav-toggle:checked + .nav-toggle-label span:nth-of-type(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle:checked + .nav-toggle-label span:nth-of-type(3) {
+            transform: rotate(-45deg);
+            margin-top: -2px;
+            background-color: #333;
+        }
+
+        /* Footer styles */
+        #footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            backdrop-filter: blur(10px); /* Blur effect */
+            z-index: 1000; /* Ensure it's above other content */
+            transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Drop shadow */
+        }
+
+        #footer.scrolled {
+            background-color: rgba(255, 255, 255, 1); /* Solid background on scroll */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .logo h1 {
+                font-size: 1rem;
+            }
+
+            .menu li {
+                margin-right: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-<header>
-    <div class="logo">
-        <img src="logo.png" alt="Logo" height=50px width=50px>
-        <h1 font-family="Ariel">Lumen Interactive</h1>
-    </div>
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Games</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Contact</a></li>
-        </ul>
-    </nav>
-</header>
-<main>
-    <!-- Your game content goes here -->
-</main>
-<footer>
-    <!-- Your footer content goes here -->
-</footer>
-<script>
-    window.onscroll = function() {scrollFunction()};
+    <header id="topbar">
+        <div class="container">
+            <div class="logo">
+                <img src="logo.png" alt="Logo">
+                <h1>Lumen Interactive</h1>
+            </div>
+            <nav>
+                <input type="checkbox" id="nav-toggle" class="nav-toggle">
+                <label for="nav-toggle" class="nav-toggle-label">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+                <ul class="menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#games">Games</a></li>
+                    <li><a href="#about">About</a></li>
+                    <!-- Add more pages as needed -->
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            document.querySelector("header").classList.add("scrolled");
-            document.querySelector("footer").classList.add("scrolled");
-        } else {
-            document.querySelector("header").classList.remove("scrolled");
-            document.querySelector("footer").classList.remove("scrolled");
-        }
-    }
-</script>
+    <main>
+        <!-- Your main content here -->
+    </main>
+
+    <footer id="footer">
+        <div class="container">
+            <!-- Footer content -->
+        </div>
+    </footer>
+
+    <script>
+        // Add class to header and footer on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('topbar');
+            const footer = document.getElementById('footer');
+            if (window.scrollY > 0) {
+                header.classList.add('scrolled');
+                footer.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+                footer.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 </html>
